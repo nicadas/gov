@@ -247,17 +247,17 @@ export default function App() {
         {/* Left Side - Hero */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#FFCD07]">
           <img
-            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop"
+            src="https://www.estadao.com.br/resizer/v2/7RMCYG4AHVF7XAUGLZYVH5UQAU.jpeg?quality=80&auth=a256ac54a4a6c46f455a870a8a64890762af361e26c8ce41186fda5867156c9c&width=1200"
             alt="Brazilian citizen"
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-full object-cover opacity-100"
           />
           <div className="absolute inset-0 flex flex-col justify-center px-16">
             <div className="mb-8">
               <h1 className="text-[#1351B4] mb-4">
-                <span className="text-5xl">gov.br</span>
+                <span className="text-5xl"></span>
               </h1>
               <p className="text-[#1351B4] text-xl max-w-md leading-relaxed">
-                <strong>uma porta única</strong> garantindo a autenticação de cada cidadão que acessa os serviços digitais do governo
+                <strong></strong> 
               </p>
             </div>
           </div>
