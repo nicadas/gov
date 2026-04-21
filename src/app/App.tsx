@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Shield, QrCode, FileText, HelpCircle, AlertCircle, CheckCircle } from 'lucide-react';
+import { Shield, QrCode, FileText, HelpCircle, AlertCircle, CheckCircle, Contrast, Accessibility } from 'lucide-react';
+import SignUp from './SignUp';
 
 // CPF Validation Function
 const validateCPF = (cpf: string): boolean => {
@@ -56,6 +57,7 @@ interface ModalState {
 export default function App() {
   const [cpf, setCpf] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     isOpen: false,
     type: 'info',
@@ -87,24 +89,8 @@ export default function App() {
 
     setIsLoading(true);
     try {
-      // Simular chamada à API
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setModal({
-        isOpen: true,
-        type: 'success',
-        title: 'Sucesso!',
-        message: `CPF ${cpf} validado com sucesso. Redirecionando...`,
-      });
-      
-      // Aqui você faria a chamada real para sua API:
-      // const response = await fetch('/api/auth/cpf', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ cpf })
-      // });
-      // const data = await response.json();
-      // if (data.success) { window.location.href = '/dashboard'; }
+      setShowSignUp(true);
     } finally {
       setIsLoading(false);
     }
@@ -120,8 +106,7 @@ export default function App() {
     });
     
     setTimeout(() => {
-      // window.location.href = 'https://acesso.gov.br';
-      console.log('Redirecionando para gov.br...');
+      window.location.href = 'https://acesso.gov.br';
     }, 2000);
   };
 
@@ -153,11 +138,6 @@ export default function App() {
       title: 'Recuperação de Senha',
       message: 'Você será redirecionado para a página de recuperação de senha.',
     });
-    
-    setTimeout(() => {
-      // window.location.href = '/forgot-password';
-      console.log('Redirecionando...');
-    }, 2000);
   };
 
   // Help Handler
@@ -170,23 +150,27 @@ export default function App() {
     });
   };
 
-  // Header Button Handlers
-  const handleMoreCitizenship = () => {
+  // Auto Contraste Handler
+  const handleAutoContrast = () => {
     setModal({
       isOpen: true,
       type: 'info',
-      title: 'Mais Cidadania',
-      message: 'Portal de serviços e informações para cidadãos brasileiros.',
+      title: 'Auto Contraste',
+      message: 'Função de alto contraste ativada para melhor visualização.',
     });
+    // Aqui você pode implementar a lógica real de contraste
+    document.body.classList.toggle('high-contrast');
   };
 
-  const handleAccess = () => {
+  // Acessibilidade Handler
+  const handleAccessibility = () => {
     setModal({
       isOpen: true,
       type: 'info',
       title: 'Acessibilidade',
-      message: 'Opções de acessibilidade e ferramentas de navegação.',
+      message: 'Opções de acessibilidade: aumento de fonte, leitor de tela, etc.',
     });
+    // Aqui você pode implementar a lógica real de acessibilidade
   };
 
   // Close Modal
@@ -216,28 +200,47 @@ export default function App() {
     }
   };
 
+  if (showSignUp) {
+    return <SignUp cpf={cpf} onBack={() => {
+      setShowSignUp(false);
+      setCpf('');
+    }} />;
+  }
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
+      {/* Header - Modificado com logo da UERN e botões de acessibilidade */}
       <header className="bg-[#1351B4] px-6 py-3 flex items-center justify-between">
+        {/* Logo UERN */}
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-white rounded"></div>
-          <span className="text-white text-sm font-semibold">BRASIL</span>
+          <img 
+            src="https://redeunisustentavel.com.br/wp-content/uploads/2024/07/UERN.jpg"
+            alt="Logo UERN"
+            className="h-8 w-auto object-contain"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/32x32/1351B4/FFFFFF?text=UERN';
+            }}
+          />
+          <span className="text-white text-sm font-semibold">UERN</span>
         </div>
-        <div className="flex items-center gap-6 text-white text-sm">
+        
+        {/* Botões do lado direito */}
+        <div className="flex items-center gap-4 text-white text-sm">
           <button 
-            onClick={handleMoreCitizenship}
+            onClick={handleAutoContrast}
             className="flex items-center gap-1 hover:underline transition-all cursor-pointer"
+            title="Auto Contraste"
           >
-            <span>🇧🇷</span>
-            <span>Mais Cidadania</span>
+            <Contrast className="w-4 h-4" />
+            <span>Auto Contraste</span>
           </button>
           <button 
-            onClick={handleAccess}
+            onClick={handleAccessibility}
             className="flex items-center gap-1 hover:underline transition-all cursor-pointer"
+            title="Acessibilidade"
           >
-            <span>🔍</span>
-            <span>Acesse</span>
+            <Accessibility className="w-4 h-4" />
+            <span>Acessibilidade</span>
           </button>
         </div>
       </header>
